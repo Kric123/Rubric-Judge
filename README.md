@@ -67,23 +67,29 @@ same labels showing up on a benchmark people actually use. In both, the judge is
 
 ### Synthetic cases (`demo.py`, `MODE="synthetic"`)
 
-Eight hand-written cases over two short conversations, each with a known label (`cases.py`).
-They cover all five labels and include the two-sided abstention pair.
+Eight hand-written cases over two short conversations, each with a hand-assigned label
+(`cases.py`).
 
 | case | ground truth | binary | rubric |
 |---|---|---|---|
 | `move-supported` | supported | PASS | supported |
 | `move-contradicted` | contradicted | FAIL | contradicted |
 | `move-missed` | missed | FAIL | missed |
-| `move-nobasis` | no_basis | FAIL | no_basis |
+| `move-nobasis` | no_basis | FAIL | contradicted |
 | `move-idk` | correct_idk | PASS | correct_idk |
 | `job-supported` | supported | PASS | supported |
 | `job-contradicted` | contradicted | FAIL | contradicted |
-| `job-idk` | correct_idk | FAIL | correct_idk |
+| `job-idk` | correct_idk | PASS | correct_idk |
 
-`job-idk` is the case worth watching. The model correctly declines a question the
-conversation can't answer. The binary judge marks it FAIL. The rubric calls it
-`correct_idk`. It's the same answer string as `move-idk` with the opposite correct verdict.
+The two judges agree on the four correct answers and on both abstentions. The difference is
+on the four FAILs: the binary judge only says FAIL, while the rubric names the reason, here
+three `contradicted` and one `missed`. `move-nobasis` is the one row where the rubric and my
+hand label disagree. I called it `no_basis`; the rubric called it `contradicted`. The
+conversation says the pet is a cat, so answering "a dog" contradicts it rather than being
+unfounded, which is a reasonable read and the kind of boundary a human-labeled set would
+settle (see roadmap). Both abstention cases also pass under the binary judge, because here
+it reads the conversation too. The case where the binary judge fails a correct decline shows
+up in the oracle run below (`35a27287`).
 
 ### Public LongMemEval oracle sample (`demo.py`, `MODE="public"`, n=30, seed=0)
 
@@ -111,9 +117,12 @@ Selected rows:
 | `22d2cb42` | PASS | `supported` | correct, grounded answer |
 
 The first four rows are the point. The binary judge reports four identical FAILs. One is a
-hallucination (`contradicted`) and three are recall failures (`missed`), and those go to
-different parts of the system. `35a27287` is the same abstention recovery as the synthetic
-set, this time on real data.
+hallucination (`contradicted`) and three are recall failures (`missed`), which point at
+different parts of the system. `35a27287` is a recovery: a correct decline that the binary
+judge still fails. The two-sided abstention case is here in real data, same surface string
+with opposite verdicts. `gpt4_4fc4f797` says "I don't have that information" when the answer
+was in the conversation (`missed`), while `f685340e_abs` says the same thing when it
+genuinely wasn't (`correct_idk`).
 
 ### A limitation this run exposed
 
