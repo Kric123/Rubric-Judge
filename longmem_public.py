@@ -60,7 +60,7 @@ def parse_oracle(path) -> list[dict]:
         out.append({
             "id": qid,
             "question": question,
-            "expected": inst.get("answer", "").strip(),
+            "expected": str(inst.get("answer", "")).strip(),
             "context": _render_sessions(inst.get("haystack_sessions")),
             "question_type": inst.get("question_type", "unknown"),
             "is_abstention": qid.endswith("_abs"),
