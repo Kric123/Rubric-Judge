@@ -10,7 +10,9 @@ from metrics import compare, label_view  # noqa: F401 - compare used once cases 
 # --- config ---------------------------------------------------------------
 MODE = "synthetic"          # "synthetic" | "fixture" | "public"
 PROVIDER = "ollama"         # "ollama" | "openai" | "gemini"  (Claude: see README extension point)
-HONCHO_FIXTURES = "..."  # local Honcho checkout
+# Fixture mode only: path to a local Honcho checkout's tests/unified/test_cases/ directory
+# (keep the trailing slash). Set it here, or via the HONCHO_FIXTURES env var.
+HONCHO_FIXTURES = os.environ.get("HONCHO_FIXTURES", "")
 ORACLE_PATH = "longmemeval_oracle.json"  # download separately - see README
 
 # Every provider below speaks the OpenAI chat-completions interface, so one client
@@ -33,6 +35,11 @@ if MODE == "synthetic":
     from cases import CASES
     cases = CASES
 elif MODE == "fixture":
+    if not HONCHO_FIXTURES:
+        raise SystemExit(
+            "Fixture mode needs HONCHO_FIXTURES pointed at a local Honcho checkout's "
+            "tests/unified/test_cases/ directory (set the env var or the constant in demo.py)."
+        )
     from longmem_fixture import load_cases
     cases = load_cases(
         [HONCHO_FIXTURES + "longmem_ancash.json", HONCHO_FIXTURES + "longmem_plank.json"],

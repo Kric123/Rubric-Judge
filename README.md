@@ -169,8 +169,13 @@ python demo.py
 ```
 
 - `synthetic`: self-contained, no download.
-- `fixture`: reads Honcho's own LongMemEval unit-test fixtures from a local Honcho checkout
-  (set `HONCHO_FIXTURES`).
+- `fixture`: runs on Honcho's own LongMemEval unit-test fixtures from a local Honcho
+  checkout. Point `HONCHO_FIXTURES` at that checkout's `tests/unified/test_cases/` directory,
+  either as an environment variable or by editing the constant in `demo.py`:
+
+  ```bash
+  export HONCHO_FIXTURES=/path/to/honcho/tests/unified/test_cases/
+  ```
 - `public`: download the LongMemEval oracle file to `longmemeval_oracle.json` (it's
   gitignored, not vendored here). Source:
   [xiaowu0162/longmemeval-cleaned](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned/blob/main/longmemeval_oracle.json)
