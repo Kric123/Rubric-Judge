@@ -5,3 +5,6 @@ venv/
 .env
 *.egg-info/
 .DS_Store
+
+# Benchmark data is downloaded locally, not vendored - see README.
+longmemeval_oracle.json

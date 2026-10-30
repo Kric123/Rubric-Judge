@@ -4,13 +4,16 @@ from typing import Protocol
 
 
 class Label(Enum):
-    SUPPORTED = "supported"
-    MISSED = "missed"
-    NO_BASIS = "no_basis"
-    CORRECT_IDK = "correct_idk"
-    CONTRADICTED = "contradicted"
+    """Diagnostic verdict for an answer, judged against the conversation. See README for full rules."""
+
+    SUPPORTED = "supported"        # states the answer; the conversation backs it up
+    MISSED = "missed"              # answer is in the conversation, but the model didn't give it
+    NO_BASIS = "no_basis"          # asserts something the conversation never established
+    CORRECT_IDK = "correct_idk"    # correctly declines; the info genuinely isn't there
+    CONTRADICTED = "contradicted"  # states something the conversation directly contradicts
 
 
+# An answer passes only when it is correct: a supported fact, or a correct decline.
 PASS_LABELS = {Label.SUPPORTED, Label.CORRECT_IDK}
 
 

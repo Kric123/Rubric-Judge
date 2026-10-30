@@ -1,14 +1,14 @@
 import json
-from unittest import case
 
-from harness import Case, Verdict, Label
+from harness import Case, Label, Verdict
+
 
 class BaselineJudge:
     def __init__(self, client , model="gpt-4o"):
         self.client = client
         self.model = model
 
-    def __call__(self, case: Case) -> Verdict:   
+    def __call__(self, case: Case) -> Verdict:
         convo = f"Conversation:\n{case.context}\n" if case.context else ""
         prompt = ("You are going to be given a question, gold answer, and model answer. "
                 "Compare the model answer to the gold answer.\n"
@@ -26,9 +26,10 @@ class BaselineJudge:
         passed = "yes" in text.lower()
         return Verdict(
             label=Label.SUPPORTED if passed else Label.MISSED,
-            reasoning = text,
+            reasoning=text,
         )
-    
+
+
 class RubricJudge:
     def __init__(self, client , model="gpt-4o"):
         self.client = client
@@ -54,9 +55,9 @@ class RubricJudge:
             messages=[{"role": "user", "content": prompt}],
             temperature=0.0,
             )
-        data =json.loads(resp.choices[0].message.content)
+        data = json.loads(resp.choices[0].message.content)
         return Verdict(
             label=Label(data["label"].strip().lower()),
-            confidence = data["confidence"],
-            reasoning = data["reasoning"],
+            confidence=data["confidence"],
+            reasoning=data["reasoning"],
         )

@@ -1,5 +1,7 @@
-from harness import Case, Result, Label, PASS_LABELS
 from sklearn.metrics import cohen_kappa_score as cohen_kappa
+
+from harness import PASS_LABELS, Case, Label, Result
+
 
 def is_passed(label: Label |None) -> bool:
 
