@@ -1,11 +1,3 @@
-"""Synthetic conversation-grounded eval cases (mini-LongMemEval shape).
-
-Each case's truth lives in its conversation (`context`), not in world knowledge:
-the judge decides whether the model's `actual` answer is supported by, contradicts,
-or is absent from what the user actually said. Two conversations seed a spread of
-labels by varying only the model's answer.
-"""
-
 from harness import Case, Label
 
 CONV_MOVE = (

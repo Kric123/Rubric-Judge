@@ -1,14 +1,3 @@
-"""Run the baseline (binary) and rubric (diagnostic) judges side by side.
-
-Three data sources, selected by MODE below:
-  "synthetic" - hand-written, conversation-grounded cases spanning all five labels (cases.py)
-  "fixture"   - Honcho's own LongMemEval unit-test fixtures (longmem_fixture.py)
-  "public"    - a sample of the public LongMemEval oracle dataset (longmem_public.py)
-
-Every answer-under-test is generated locally with Ollama (qwen). This exercises the
-JUDGE on realistic inputs; it is not a measurement of any production memory system.
-"""
-
 import json  # noqa: F401 - used by the optional compare() print below
 import os
 
@@ -21,7 +10,7 @@ from metrics import compare, label_view  # noqa: F401 - compare used once cases 
 # --- config ---------------------------------------------------------------
 MODE = "synthetic"          # "synthetic" | "fixture" | "public"
 PROVIDER = "ollama"         # "ollama" | "openai" | "gemini"  (Claude: see README extension point)
-HONCHO_FIXTURES = "C:/Users/Kyler/desktop/honcho/tests/unified/test_cases/"  # local Honcho checkout
+HONCHO_FIXTURES = "..."  # local Honcho checkout
 ORACLE_PATH = "longmemeval_oracle.json"  # download separately - see README
 
 # Every provider below speaks the OpenAI chat-completions interface, so one client
