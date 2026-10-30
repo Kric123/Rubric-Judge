@@ -8,7 +8,7 @@ from longmem_fixture import load_cases
 
 
 client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
-base = r"C:/Users/Kyler/desktop/honcho/tests/unified/test_cases/"
+base = r"C:\Users\Kyle\Desktop\Honcho\tests\unified/test_cases"
 #cases = CASES
 #cases = [c for c in CASES if "idk" in c.id]
 cases = load_cases(
